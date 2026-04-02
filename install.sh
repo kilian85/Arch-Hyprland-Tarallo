@@ -74,8 +74,8 @@ echo -e "\e[35m
 printf "\n%.0s" {1..1} 
 
 # Welcome message using whiptail (for displaying information)
-whiptail --title "KooL Arch-Hyprland (2025) Install Script" \
-    --msgbox "Welcome to KooL Arch-Hyprland (2025) Install Script!!!\n\n\
+whiptail --title "Tarallo Arch-Hyprland (2025) Install Script" \
+    --msgbox "Benvenuto in Tarallo Arch-Hyprland (2026) Install Script!!!\n\n\
 ATTENTION: Run a full system update and Reboot first !!! (Highly Recommended)\n\n\
 NOTE: If you are installing on a VM, ensure to enable 3D acceleration else Hyprland may NOT start!" \
     15 80
@@ -432,10 +432,6 @@ for option in "${options[@]}"; do
         pokemon)
             echo "${INFO} Adding ${SKY_BLUE}Pokemon color scripts to terminal...${RESET}" | tee -a "$LOG"
             execute_script "zsh_pokemon.sh"
-            ;;
-        rog)
-            echo "${INFO} Installing ${SKY_BLUE}ROG laptop packages...${RESET}" | tee -a "$LOG"
-            execute_script "rog.sh"
             ;;
         dots)
             echo "${INFO} Installing pre-configured ${SKY_BLUE}KooL Hyprland dotfiles...${RESET}" | tee -a "$LOG"

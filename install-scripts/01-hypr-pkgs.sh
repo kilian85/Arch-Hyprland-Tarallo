@@ -8,7 +8,11 @@
 
 # add packages wanted here
 Extra=(
-
+  steam
+  bottles
+  linux-wallpaperengine-gui-git
+  brave-bin
+  visual-studio-code-bin
 )
 
 hypr_package=( 
