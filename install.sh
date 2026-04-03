@@ -442,7 +442,7 @@ for option in "${options[@]}"; do
         wallpaper_engine)
             echo "${INFO} Installando ${SKY_BLUE}linux-wallpaperengine-gui...${RESET}" | tee -a "$LOG"
             # Utilizza l'helper AUR (yay o paru) che lo script ha rilevato all'inizio
-            $aur_helper -S --noconfirm linux-wallpaperengine-gui-bin
+            $aur_helper -S --noconfirm linux-wallpaperengine-gui-bin 2>&1 | tee -a "$LOG"
             ;;
         *)
             echo "Opzione sconosciuta: $option" | tee -a "$LOG"
