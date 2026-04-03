@@ -8,10 +8,13 @@
 
 # aggiungi pacchetti desiderati qui
 Extra=(
+  libayatana-appindicator
   steam
   bottles
   brave-bin
   visual-studio-code-bin
+  downgrade
+  
 )
 
 hypr_package=(
