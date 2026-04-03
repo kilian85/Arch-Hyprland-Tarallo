@@ -131,6 +131,7 @@ sddm_theme="OFF"
 xdph="OFF"
 zsh="OFF"
 pokemon="OFF"
+#rog="OFF"
 dots="OFF"
 input_group="OFF"
 nvidia="OFF"
@@ -312,8 +313,11 @@ while true; do
         else
             # User chose to continue
             echo "${INFO} ⚠️ Continuando SENZA l'installazione dei dotfiles..." | tee -a "$LOG"
-
-    # Prepare the confirmation message
+			printf "\n%.0s" {1..1}
+        fi
+    fi
+    
+	# Prepare the confirmation message
     confirm_message="Hai selezionato le seguenti opzioni:\n\n"
     for option in "${options[@]}"; do
         confirm_message+=" - $option\n"
