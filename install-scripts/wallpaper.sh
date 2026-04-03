@@ -8,8 +8,8 @@ ERROR="$(tput setaf 1)[ERROR]$(tput sgr0)"
 echo "${NOTE} Installazione di Linux Wallpaper Engine GUI..."
 
 # Tenta l'installazione usando l'helper AUR disponibile
-if command -v paru &>/dev/null; then
-    paru -S --noconfirm linux-wallpaperengine-gui-git
+if command -v yay &>/dev/null; then
+    yay -S --noconfirm linux-wallpaperengine-gui-git
 else
     echo "${ERROR} Nessun helper AUR (yay/paru) trovato!"
     exit 1
