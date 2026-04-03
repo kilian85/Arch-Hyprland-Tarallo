@@ -1,88 +1,87 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Temperature Monitor - CPU/GPU Temperature Alerts #
+# Monitor Temperature - Avvisi Temperatura CPU/GPU #
 
 temp=(
   lm_sensors
   libnotify
 )
 
-
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## ATTENZIONE: NON MODIFICARE OLTRE QUESTA LINEA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro alla cartella superiore dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Carica il file delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile caricare Global_functions.sh"
   exit 1
 fi
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log includendo data e ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_temp-monitor.log"
 
-# Temperature Monitor
-printf "${NOTE} Installing ${SKY_BLUE}Temperature Monitor${RESET} Packages...\n"
+# Monitor di Temperatura
+printf "${NOTE} Installazione pacchetti ${SKY_BLUE}Monitor di Temperatura${RESET}...\n"
 for TEMP in "${temp[@]}"; do
   install_package "$TEMP" "$LOG"
 done
 
-# Detect sensors
-printf "${NOTE} Detecting ${YELLOW}hardware sensors${RESET}...\n"
+# Rilevamento sensori
+printf "${NOTE} Rilevamento ${YELLOW}sensori hardware${RESET}...\n"
 sudo sensors-detect --auto 2>&1 | tee -a "$LOG"
 
-# Create temperature monitoring script
-printf "${NOTE} Creating ${YELLOW}temperature monitoring${RESET} script...\n"
+# Creazione dello script di monitoraggio temperatura
+printf "${NOTE} Creazione dello script di ${YELLOW}monitoraggio temperatura${RESET}...\n"
 
 TEMP_SCRIPT="$HOME/.config/hypr/scripts/temp-monitor.sh"
 mkdir -p "$HOME/.config/hypr/scripts"
 
 cat > "$TEMP_SCRIPT" << 'EOF'
 #!/bin/bash
-# Temperature Monitoring Script
-# Monitors CPU and GPU temperatures and sends alerts
+# Script di Monitoraggio Temperatura
+# Monitora le temperature di CPU e GPU e invia avvisi
 
-# Configuration
+# Configurazione
 CPU_TEMP_WARNING=75
 CPU_TEMP_CRITICAL=85
 GPU_TEMP_WARNING=75
 GPU_TEMP_CRITICAL=85
-CHECK_INTERVAL=30  # Check every 30 seconds
+CHECK_INTERVAL=30  # Controlla ogni 30 secondi
 
-# Track notification state
+# Tracciamento stato notifiche
 NOTIFIED_CPU_WARN=false
 NOTIFIED_CPU_CRIT=false
 NOTIFIED_GPU_WARN=false
 NOTIFIED_GPU_CRIT=false
 
 while true; do
-    # Get CPU temperature (average of all cores)
+    # Ottieni temperatura CPU (media di tutti i core)
     CPU_TEMP=$(sensors | grep -i 'Package id 0:\|Tdie:' | awk '{print $4}' | sed 's/+//;s/°C//' | head -1)
     
-    # If Package id not found, try other methods
+    # Se Package id non trovato, prova altri metodi
     if [ -z "$CPU_TEMP" ]; then
         CPU_TEMP=$(sensors | grep -i 'Core 0:' | awk '{print $3}' | sed 's/+//;s/°C//' | head -1)
     fi
     
-    # Get GPU temperature (if available)
+    # Ottieni temperatura GPU (se disponibile)
     GPU_TEMP=$(sensors | grep -i 'edge:\|temp1:' | awk '{print $2}' | sed 's/+//;s/°C//' | head -1)
     
-    # Check CPU temperature
+    # Controllo temperatura CPU
     if [ -n "$CPU_TEMP" ]; then
         CPU_TEMP_INT=${CPU_TEMP%.*}
         
         if [ "$CPU_TEMP_INT" -ge "$CPU_TEMP_CRITICAL" ]; then
             if [ "$NOTIFIED_CPU_CRIT" = false ]; then
-                notify-send -u critical -i temperature-high "Critical CPU Temperature" "CPU temperature is ${CPU_TEMP}°C! System may throttle or shutdown."
+                notify-send -u critical -i temperature-high "Temperatura CPU Critica" "La temperatura della CPU è di ${CPU_TEMP}°C! Il sistema potrebbe rallentare o spegnersi."
                 NOTIFIED_CPU_CRIT=true
                 NOTIFIED_CPU_WARN=true
             fi
         elif [ "$CPU_TEMP_INT" -ge "$CPU_TEMP_WARNING" ]; then
             if [ "$NOTIFIED_CPU_WARN" = false ]; then
-                notify-send -u normal -i temperature-normal "High CPU Temperature" "CPU temperature is ${CPU_TEMP}°C"
+                notify-send -u normal -i temperature-normal "Temperatura CPU Elevata" "La temperatura della CPU è di ${CPU_TEMP}°C"
                 NOTIFIED_CPU_WARN=true
             fi
         else
@@ -91,19 +90,19 @@ while true; do
         fi
     fi
     
-    # Check GPU temperature
+    # Controllo temperatura GPU
     if [ -n "$GPU_TEMP" ]; then
         GPU_TEMP_INT=${GPU_TEMP%.*}
         
         if [ "$GPU_TEMP_INT" -ge "$GPU_TEMP_CRITICAL" ]; then
             if [ "$NOTIFIED_GPU_CRIT" = false ]; then
-                notify-send -u critical -i temperature-high "Critical GPU Temperature" "GPU temperature is ${GPU_TEMP}°C!"
+                notify-send -u critical -i temperature-high "Temperatura GPU Critica" "La temperatura della GPU è di ${GPU_TEMP}°C!"
                 NOTIFIED_GPU_CRIT=true
                 NOTIFIED_GPU_WARN=true
             fi
         elif [ "$GPU_TEMP_INT" -ge "$GPU_TEMP_WARNING" ]; then
             if [ "$NOTIFIED_GPU_WARN" = false ]; then
-                notify-send -u normal -i temperature-normal "High GPU Temperature" "GPU temperature is ${GPU_TEMP}°C"
+                notify-send -u normal -i temperature-normal "Temperatura GPU Elevata" "La temperatura della GPU è di ${GPU_TEMP}°C"
                 NOTIFIED_GPU_WARN=true
             fi
         else
@@ -118,17 +117,17 @@ EOF
 
 chmod +x "$TEMP_SCRIPT"
 
-printf "${OK} Temperature monitoring script created at ${YELLOW}$TEMP_SCRIPT${RESET}\n"
+printf "${OK} Script di monitoraggio creato in ${YELLOW}$TEMP_SCRIPT${RESET}\n"
 
-# Create systemd user service
-printf "${NOTE} Creating ${YELLOW}systemd user service${RESET} for temperature monitoring...\n"
+# Creazione del servizio utente systemd
+printf "${NOTE} Creazione del ${YELLOW}servizio utente systemd${RESET} per il monitoraggio temperatura...\n"
 
 SYSTEMD_DIR="$HOME/.config/systemd/user"
 mkdir -p "$SYSTEMD_DIR"
 
 cat > "$SYSTEMD_DIR/temp-monitor.service" << EOF
 [Unit]
-Description=Temperature Monitor
+Description=Monitor di Temperatura
 After=graphical-session.target
 
 [Service]
@@ -141,16 +140,16 @@ RestartSec=10
 WantedBy=default.target
 EOF
 
-printf "${OK} Systemd service created\n"
+printf "${OK} Servizio Systemd creato\n"
 
-# Enable and start the service
-printf "${NOTE} Enabling and starting ${YELLOW}temp-monitor${RESET} service...\n"
+# Abilitazione e avvio del servizio
+printf "${NOTE} Abilitazione e avvio del servizio ${YELLOW}temp-monitor${RESET}...\n"
 systemctl --user daemon-reload
 systemctl --user enable temp-monitor.service 2>&1 | tee -a "$LOG"
 systemctl --user start temp-monitor.service 2>&1 | tee -a "$LOG"
 
-printf "${OK} Temperature monitor service is now running!\n"
-printf "${INFO} You can check status with: ${YELLOW}systemctl --user status temp-monitor${RESET}\n"
-printf "${INFO} View temperatures: ${YELLOW}sensors${RESET}\n"
+printf "${OK} Il servizio di monitoraggio temperatura è ora attivo!\n"
+printf "${INFO} Puoi controllare lo stato con: ${YELLOW}systemctl --user status temp-monitor${RESET}\n"
+printf "${INFO} Visualizza temperature attuali: ${YELLOW}sensors${RESET}\n"
 
 printf "\n%.0s" {1..2}
