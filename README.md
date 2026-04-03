@@ -1,6 +1,3 @@
-
-
-
 <div align="center">
 
 # 💌 ** KooL's Arch - Hyprland Install Script ** 💌
