@@ -53,6 +53,7 @@ hypr_package=(
   xdg-user-dirs
   xdg-utils
   yad
+  libayatana-appindicator
 )
 
 # i seguenti pacchetti possono essere eliminati. tuttavia, i dotfiles potrebbero non funzionare correttamente
