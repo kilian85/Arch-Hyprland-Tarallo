@@ -10,6 +10,7 @@
 Extra=(
   steam
   bottles
+  linux-wallpaperengine-git
   linux-wallpaperengine-gui-git
   brave-bin
   visual-studio-code-bin
