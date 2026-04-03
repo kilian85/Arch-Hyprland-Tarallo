@@ -101,4 +101,14 @@ if git clone --depth=1 "$source_theme" "$theme_name"; then
   fi
 
   # Sostituisce lo sfondo attuale con quello degli asset
-  sudo cp -r
+  sudo cp -r assets/sddm.png "/usr/share/sddm/themes/$theme_name/Backgrounds/default" 2>&1 | tee -a "$LOG"
+  sudo sed -i 's|^wallpaper=".*"|wallpaper="Backgrounds/default"|' "/usr/share/sddm/themes/$theme_name/theme.conf" 2>&1 | tee -a "$LOG"
+
+  echo "${OK} - ${MAGENTA}Additional ${YELLOW}$theme_name SDDM Theme${RESET} successfully installed." | tee -a "$LOG"
+
+else
+
+  echo "${ERROR} - Fallito la clonazione di sddm theme repository. Perfavore controlla la tua connessione internet." | tee -a "$LOG" >&2
+fi
+
+printf "\n%.0s" {1..2}
