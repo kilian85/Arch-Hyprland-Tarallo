@@ -225,7 +225,7 @@ fi
 
 # Initialize the options array for whiptail checklist
 options_command=(
-    whiptail --title "Seleziona Opzioni" --checklist "Scegli le opzioni da installare o configurare\nNOTA: 'BARRA SPAZIATRICE' per selezionare & 'TAB' per cambiare selezione" 28 85 20
+    whiptail --title "Seleziona Opzioni" --checklist "Scegli le opzioni da installare o configurare\nNOTA: 'BARRA SPAZIATRICE' per selezionare & 'TAB' per cambiare selezione" 28 100 15
 )
 
 # Aggiungi opzioni NVIDIA se rilevata
