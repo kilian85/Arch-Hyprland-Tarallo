@@ -1,6 +1,6 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# SDDM Log-in Manager #
+# Gestore di accesso SDDM #
 
 sddm=(
   qt6-declarative
@@ -11,7 +11,7 @@ sddm=(
   sddm
 )
 
-# login managers to attempt to disable
+# gestori di accesso da disabilitare
 login=(
   lightdm
   gdm3
@@ -20,56 +20,56 @@ login=(
   lxdm-gtk3
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
 cd "$PARENT_DIR" || {
-  echo "${ERROR} Failed to change directory to $PARENT_DIR"
+  echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"
   exit 1
 }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_sddm.log"
 
-# Install SDDM and SDDM theme
-printf "${NOTE} Installing sddm and dependencies........\n"
+# Installa SDDM e il tema SDDM
+printf "${NOTE} Installazione di sddm e dipendenze........\n"
 for package in "${sddm[@]}"; do
   install_package "$package" "$LOG"
 done
 
 printf "\n%.0s" {1..1}
 
-# Check if other login managers installed and disabling its service before enabling sddm
+# Verifica se altri gestori di accesso sono installati e disabilita il loro servizio prima di abilitare sddm
 for login_manager in "${login[@]}"; do
   if pacman -Qs "$login_manager" >/dev/null 2>&1; then
     sudo systemctl disable "$login_manager.service" >>"$LOG" 2>&1
-    echo "$login_manager disabled." >>"$LOG" 2>&1
+    echo "$login_manager disabilitato." >>"$LOG" 2>&1
   fi
 done
 
-# Double check with systemctl
+# Verifica doppia con systemctl
 for manager in "${login[@]}"; do
   if systemctl is-active --quiet "$manager" >/dev/null 2>&1; then
-    echo "$manager is active, disabling it..." >>"$LOG" 2>&1
+    echo "$manager è attivo, lo disabilito..." >>"$LOG" 2>&1
     sudo systemctl disable "$manager" --now >>"$LOG" 2>&1
   fi
 done
 
 printf "\n%.0s" {1..1}
-printf "${INFO} Activating sddm service........\n"
+printf "${INFO} Attivazione del servizio sddm........\n"
 sudo systemctl enable sddm
 
 wayland_sessions_dir=/usr/share/wayland-sessions
 [ ! -d "$wayland_sessions_dir" ] && {
-  printf "$CAT - $wayland_sessions_dir not found, creating...\n"
+  printf "$CAT - $wayland_sessions_dir non trovato, creazione...\n"
   sudo mkdir "$wayland_sessions_dir" 2>&1 | tee -a "$LOG"
 }
 
