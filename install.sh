@@ -266,7 +266,7 @@ options_command+=(
     "xdph" "Installare XDG-DESKTOP-PORTAL-HYPRLAND (per condivisione schermo)?" "OFF"
     "zsh" "Installare la shell zsh con Oh-My-Zsh?" "OFF"
     "pokemon" "Aggiungere script di colori Pokemon al tuo terminale?" "OFF"
-    "rog" "Stai installando su laptop Asus ROG?" "OFF"
+    #"rog" "Stai installando su laptop Asus ROG?" "OFF"
     "dots" "Scaricare e installare i dotfiles KooL Hyprland preconfigurati?" "OFF"
 )
 
