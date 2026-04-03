@@ -1,6 +1,6 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Nvidia Stuffs #
+# Cose Nvidia #
 
 nvidia_pkg=(
   nvidia-dkms
@@ -11,91 +11,91 @@ nvidia_pkg=(
 )
 
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
 
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_nvidia.log"
 
 
-# nvidia stuff
-printf "${YELLOW} Checking for other hyprland packages and remove if any..${RESET}\n"
+# cose nvidia
+printf "${YELLOW} Controllo di altri pacchetti hyprland e rimozione se presenti..${RESET}\n"
 if pacman -Qs hyprland > /dev/null; then
-  printf "${YELLOW} Hyprland detected. removing to install Hyprland from official repo...${RESET}\n"
+  printf "${YELLOW} Hyprland rilevato. rimozione per installare Hyprland dal repo ufficiale...${RESET}\n"
     for hyprnvi in hyprland-git hyprland-nvidia hyprland-nvidia-git hyprland-nvidia-hidpi-git; do
     sudo pacman -R --noconfirm "$hyprnvi" 2>/dev/null | tee -a "$LOG" || true
     done
 fi
 
-# Install additional Nvidia packages
-printf "${YELLOW} Installing ${SKY_BLUE}Nvidia Packages and Linux headers${RESET}...\n"
+# Installa pacchetti Nvidia aggiuntivi
+printf "${YELLOW} Installazione di ${SKY_BLUE}Pacchetti Nvidia e header Linux${RESET}...\n"
 for krnl in $(cat /usr/lib/modules/*/pkgbase); do
   for NVIDIA in "${krnl}-headers" "${nvidia_pkg[@]}"; do
     install_package "$NVIDIA" "$LOG"
   done
 done
 
-# Check if the Nvidia modules are already added in mkinitcpio.conf and add if not
+# Verifica se i moduli Nvidia sono già aggiunti in mkinitcpio.conf e aggiungili se non lo sono
 if grep -qE '^MODULES=.*nvidia. *nvidia_modeset.*nvidia_uvm.*nvidia_drm' /etc/mkinitcpio.conf; then
-  echo "Nvidia modules already included in /etc/mkinitcpio.conf" 2>&1 | tee -a "$LOG"
+  echo "Moduli Nvidia già inclusi in /etc/mkinitcpio.conf" 2>&1 | tee -a "$LOG"
 else
   sudo sed -Ei 's/^(MODULES=\([^\)]*)\)/\1 nvidia nvidia_modeset nvidia_uvm nvidia_drm)/' /etc/mkinitcpio.conf 2>&1 | tee -a "$LOG"
-  echo "${OK} Nvidia modules added in /etc/mkinitcpio.conf"
+  echo "${OK} Moduli Nvidia aggiunti in /etc/mkinitcpio.conf"
 fi
 
 printf "\n%.0s" {1..1}
-printf "${INFO} Rebuilding ${YELLOW}Initramfs${RESET}...\n" 2>&1 | tee -a "$LOG"
+printf "${INFO} Ricostruzione di ${YELLOW}Initramfs${RESET}...\n" 2>&1 | tee -a "$LOG"
 sudo mkinitcpio -P 2>&1 | tee -a "$LOG"
 
 printf "\n%.0s" {1..1}
 
-# Additional Nvidia steps
+# Passi aggiuntivi per Nvidia
 NVEA="/etc/modprobe.d/nvidia.conf"
 if [ -f "$NVEA" ]; then
-  printf "${INFO} Seems like ${YELLOW}nvidia_drm modeset=1 fbdev=1${RESET} is already added in your system..moving on."
+  printf "${INFO} Sembra che ${YELLOW}nvidia_drm modeset=1 fbdev=1${RESET} sia già aggiunto nel tuo sistema..procedo."
   printf "\n"
 else
   printf "\n"
-  printf "${YELLOW} Adding options to $NVEA..."
+  printf "${YELLOW} Aggiunta di opzioni a $NVEA..."
   sudo echo -e "options nvidia_drm modeset=1 fbdev=1" | sudo tee -a /etc/modprobe.d/nvidia.conf 2>&1 | tee -a "$LOG"
   printf "\n"
 fi
 
-# Additional for GRUB users
+# Aggiuntivo per utenti GRUB
 if [ -f /etc/default/grub ]; then
-    printf "${INFO} ${YELLOW}GRUB${RESET} bootloader detected\n" 2>&1 | tee -a "$LOG"
+    printf "${INFO} ${YELLOW}GRUB${RESET} bootloader rilevato\n" 2>&1 | tee -a "$LOG"
     
-    # Check if nvidia-drm.modeset=1 is present
+    # Verifica se nvidia-drm.modeset=1 è presente
     if ! sudo grep -q "nvidia-drm.modeset=1" /etc/default/grub; then
         sudo sed -i -e 's/\(GRUB_CMDLINE_LINUX_DEFAULT=".*\)"/\1 nvidia-drm.modeset=1"/' /etc/default/grub
-        printf "${OK} nvidia-drm.modeset=1 added to /etc/default/grub\n" 2>&1 | tee -a "$LOG"
+        printf "${OK} nvidia-drm.modeset=1 aggiunto a /etc/default/grub\n" 2>&1 | tee -a "$LOG"
     fi
 
-    # Check if nvidia_drm.fbdev=1 is present
+    # Verifica se nvidia_drm.fbdev=1 è presente
     if ! sudo grep -q "nvidia_drm.fbdev=1" /etc/default/grub; then
         sudo sed -i -e 's/\(GRUB_CMDLINE_LINUX_DEFAULT=".*\)"/\1 nvidia_drm.fbdev=1"/' /etc/default/grub
-        printf "${OK} nvidia_drm.fbdev=1 added to /etc/default/grub\n" 2>&1 | tee -a "$LOG"
+        printf "${OK} nvidia_drm.fbdev=1 aggiunto a /etc/default/grub\n" 2>&1 | tee -a "$LOG"
     fi
 
-    # Regenerate GRUB configuration 
+    # Rigenera configurazione GRUB 
     if sudo grep -q "nvidia-drm.modeset=1" /etc/default/grub || sudo grep -q "nvidia_drm.fbdev=1" /etc/default/grub; then
        sudo grub-mkconfig -o /boot/grub/grub.cfg
-       printf "${INFO} ${YELLOW}GRUB${RESET} configuration regenerated\n" 2>&1 | tee -a "$LOG"
+       printf "${INFO} ${YELLOW}GRUB${RESET} configurazione rigenerata\n" 2>&1 | tee -a "$LOG"
     fi
   
-    printf "${OK} Additional steps for ${YELLOW}GRUB${RESET} completed\n" 2>&1 | tee -a "$LOG"
+    printf "${OK} Passi aggiuntivi per ${YELLOW}GRUB${RESET} completati\n" 2>&1 | tee -a "$LOG"
 fi
 
 # Additional for systemd-boot users
