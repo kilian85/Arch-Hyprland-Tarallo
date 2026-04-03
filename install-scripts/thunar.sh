@@ -11,39 +11,39 @@ thunar=(
   xarchiver
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## ATTENZIONE: NON MODIFICARE OLTRE QUESTA LINEA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro alla cartella superiore dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Carica il file delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile caricare Global_functions.sh"
   exit 1
 fi
 
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log includendo data e ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_thunar.log"
 
 # Thunar
-printf "${INFO} Installing ${SKY_BLUE}Thunar${RESET} Packages...\n"  
+printf "${INFO} Installazione pacchetti ${SKY_BLUE}Thunar${RESET}...\n"  
   for THUNAR in "${thunar[@]}"; do
     install_package "$THUNAR" "$LOG"
   done
 
 printf "\n%.0s" {1..1}
 
- # Check for existing configs and copy if does not exist
+ # Controlla le configurazioni esistenti e le copia se non presenti
 for DIR1 in gtk-3.0 Thunar xfce4; do
   DIRPATH=~/.config/$DIR1
   if [ -d "$DIRPATH" ]; then
-    echo -e "${NOTE} Config for ${MAGENTA}$DIR1${RESET} found, no need to copy." 2>&1 | tee -a "$LOG"
+    echo -e "${NOTE} Configurazione per ${MAGENTA}$DIR1${RESET} trovata, copia non necessaria." 2>&1 | tee -a "$LOG"
   else
-    echo -e "${NOTE} Config for ${YELLOW}$DIR1${RESET} not found, copying from assets." 2>&1 | tee -a "$LOG"
-    cp -r assets/$DIR1 ~/.config/ && echo "${OK} Copy $DIR1 completed!" || echo "${ERROR} Failed to copy $DIR1 config files." 2>&1 | tee -a "$LOG"
+    echo -e "${NOTE} Configurazione per ${YELLOW}$DIR1${RESET} non trovata, copia dai file asset in corso." 2>&1 | tee -a "$LOG"
+    cp -r assets/$DIR1 ~/.config/ && echo "${OK} Copia di $DIR1 completata!" || echo "${ERROR} Errore durante la copia dei file di configurazione di $DIR1." 2>&1 | tee -a "$LOG"
   fi
 done
 
