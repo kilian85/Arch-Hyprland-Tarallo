@@ -1,6 +1,6 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# zsh and oh my zsh#
+# zsh e oh my zsh #
 
 zsh_pkg=(
   lsd
@@ -13,60 +13,56 @@ zsh_pkg2=(
   fzf
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## ATTENZIONE: NON MODIFICARE OLTRE QUESTA LINEA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Carica lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile caricare Global_functions.sh"
   exit 1
 fi
 
-
-
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log includendo la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_zsh.log"
 
-# Installing core zsh packages
-printf "\n%s - Installing ${SKY_BLUE}zsh packages${RESET} .... \n" "${NOTE}"
+# Installazione dei pacchetti core di zsh
+printf "\n%s - Installazione dei ${SKY_BLUE}pacchetti zsh${RESET} .... \n" "${NOTE}"
 for ZSH in "${zsh_pkg[@]}"; do
   install_package "$ZSH" "$LOG"
 done 
 
-
-
-# Check if the zsh-completions directory exists
+# Controlla se la directory zsh-completions esiste
 if [ -d "zsh-completions" ]; then
     rm -rf zsh-completions
 fi
 
-# Install Oh My Zsh, plugins, and set zsh as default shell
+# Installa Oh My Zsh, i plugin e imposta zsh come shell predefinita
 if command -v zsh >/dev/null; then
-  printf "${NOTE} Installing ${SKY_BLUE}Oh My Zsh and plugins${RESET} ...\n"
+  printf "${NOTE} Installazione di ${SKY_BLUE}Oh My Zsh e dei plugin${RESET} ...\n"
   if [ ! -d "$HOME/.oh-my-zsh" ]; then  
     sh -c "$(curl -fsSL https://install.ohmyz.sh)" "" --unattended  	       
   else
-    echo "${INFO} Directory .oh-my-zsh already exists. Skipping re-installation." 2>&1 | tee -a "$LOG"
+    echo "${INFO} La directory .oh-my-zsh esiste già. Salto la re-installazione." 2>&1 | tee -a "$LOG"
   fi
   
-  # Check if the directories exist before cloning the repositories
+  # Controlla se le directory esistono prima di clonare i repository
   if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ]; then
       git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions 
   else
-      echo "${INFO} Directory zsh-autosuggestions already exists. Cloning Skipped." 2>&1 | tee -a "$LOG"
+      echo "${INFO} La directory zsh-autosuggestions esiste già. Clonazione saltata." 2>&1 | tee -a "$LOG"
   fi
 
   if [ ! -d "$HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ]; then
       git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting 
   else
-      echo "${INFO} Directory zsh-syntax-highlighting already exists. Cloning Skipped." 2>&1 | tee -a "$LOG"
+      echo "${INFO} La directory zsh-syntax-highlighting esiste già. Clonazione saltata." 2>&1 | tee -a "$LOG"
   fi
   
-  # Check if ~/.zshrc and .zprofile exists, create a backup, and copy the new configuration
+  # Controlla se ~/.zshrc e .zprofile esistono, crea un backup e copia la nuova configurazione
   if [ -f "$HOME/.zshrc" ]; then
       cp -b "$HOME/.zshrc" "$HOME/.zshrc-backup" || true
   fi
@@ -75,36 +71,36 @@ if command -v zsh >/dev/null; then
       cp -b "$HOME/.zprofile" "$HOME/.zprofile-backup" || true
   fi
   
-  # Copying the preconfigured zsh themes and profile
+  # Copia dei temi zsh preconfigurati e del profilo
   cp -r 'assets/.zshrc' ~/
   cp -r 'assets/.zprofile' ~/
 
-  # Check if the current shell is zsh
+  # Controlla se la shell corrente è zsh
   current_shell=$(basename "$SHELL")
   if [ "$current_shell" != "zsh" ]; then
-    printf "${NOTE} Changing default shell to ${MAGENTA}zsh${RESET}..."
+    printf "${NOTE} Cambio della shell predefinita in ${MAGENTA}zsh${RESET}..."
     printf "\n%.0s" {1..2}
 
-    # Loop to ensure the chsh command succeeds
+    # Ciclo per assicurarsi che il comando chsh vada a buon fine
     while ! chsh -s "$(command -v zsh)"; do
-      echo "${ERROR} Authentication failed. Please enter the correct password." 2>&1 | tee -a "$LOG"
+      echo "${ERROR} Autenticazione fallita. Per favore inserisci la password corretta." 2>&1 | tee -a "$LOG"
       sleep 1
     done
 
-    printf "${INFO} Shell changed successfully to ${MAGENTA}zsh${RESET}" 2>&1 | tee -a "$LOG"
+    printf "${INFO} Shell cambiata con successo in ${MAGENTA}zsh${RESET}" 2>&1 | tee -a "$LOG"
   else
-    echo "${NOTE} Your shell is already set to ${MAGENTA}zsh${RESET}."
+    echo "${NOTE} La tua shell è già impostata su ${MAGENTA}zsh${RESET}."
   fi
   
 fi
 
-# Installing core zsh packages
-printf "\n%s - Installing ${SKY_BLUE}fzf${RESET} .... \n" "${NOTE}"
+# Installazione dei pacchetti core aggiuntivi
+printf "\n%s - Installazione di ${SKY_BLUE}fzf${RESET} .... \n" "${NOTE}"
 for ZSH2 in "${zsh_pkg2[@]}"; do
   install_package "$ZSH2" "$LOG"
 done
 
-# copy additional oh-my-zsh themes from assets
+# Copia i temi oh-my-zsh addizionali dagli assets
 if [ -d "$HOME/.oh-my-zsh/themes" ]; then
     cp -r assets/add_zsh_theme/* ~/.oh-my-zsh/themes >> "$LOG" 2>&1
 fi
