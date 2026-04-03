@@ -1,23 +1,23 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Hyprland-Dots to download from main #
+# Hyprland-Dots da scaricare dal main #
 
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
-# Check if Hyprland-Dots exists
-printf "${NOTE} Cloning and Installing ${SKY_BLUE}KooL's Hyprland Dots${RESET}....\n"
+# Verifica se Hyprland-Dots esiste
+printf "${NOTE} Clonazione e installazione di ${SKY_BLUE}KooL's Hyprland Dots${RESET}....\n"
 
 if [ -d Hyprland-Dots ]; then
   cd Hyprland-Dots
@@ -30,7 +30,7 @@ else
     chmod +x copy.sh
     ./copy.sh 
   else
-    echo -e "$ERROR Can't download ${YELLOW}KooL's Hyprland-Dots${RESET} . Check your internet connection"
+    echo -e "$ERROR Impossibile scaricare ${YELLOW}KooL's Hyprland-Dots${RESET} . Verifica la tua connessione internet"
   fi
 fi
 
