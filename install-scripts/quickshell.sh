@@ -1,6 +1,6 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# quickshell - for desktop overview replacing AGS
+# quickshell - per panoramica desktop sostituendo AGS
 
 if [[ $USE_PRESET = [Yy] ]]; then
   source ./preset.sh
@@ -11,27 +11,27 @@ quick=(
     quickshell
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
 cd "$PARENT_DIR" || {
-  echo "${ERROR} Failed to change directory to $PARENT_DIR"
+  echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"
   exit 1
 }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_quick.log"
 
-# Installation of main components
-printf "\n%s - Installing ${SKY_BLUE}Quick Shell ${RESET} for Desktop Overview \n" "${NOTE}"
+# Installazione dei componenti principali
+printf "\n%s - Installazione di ${SKY_BLUE}Quick Shell ${RESET} per Panoramica Desktop \n" "${NOTE}"
 
 for PKG1 in "${quick[@]}"; do
   install_package "$PKG1" "$LOG"
