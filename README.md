@@ -22,7 +22,7 @@
  </div><br>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/JaKooLit/Hyprland-Dots/main/assets/latte.png" width="200" />
+  <img src="https://raw.githubusercontent.com/kilian85/Hyprland-Dots-Tarallo/main/assets/latte.png" width="200" />
 </p>
 
 <div align="center">
@@ -55,12 +55,6 @@ https://github.com/user-attachments/assets/49bc12b2-abaf-45de-a21c-67aacd9bb872
 
 </div>
 
-### Gallery and Videos
-
-#### 🎥 Feb 2025 Video explanation of installation with preset
-
-- [YOUTUBE-LINK](https://youtu.be/wQ70lo7P6vA?si=_QcbrNKh_Bg0L3wC)
-- [YOUTUBE-Hyprland-Playlist](https://youtube.com/playlist?list=PLDtGd5Fw5_GjXCznR0BzCJJDIQSZJRbxx&si=iaNjLulFdsZ6AV-t)
 
 ### 🪧🪧🪧 ANNOUNCEMENT 🪧🪧🪧
 
