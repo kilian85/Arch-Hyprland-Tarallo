@@ -1,6 +1,6 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Main Hyprland Package #
+# Pacchetto Principale Hyprland #
 
 hypr_eco=(
   hypridle
@@ -11,40 +11,40 @@ hypr=(
   hyprland
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_hyprland.log"
 
-# Check if Hyprland is installed
+# Verifica se Hyprland è installato
 if command -v Hyprland >/dev/null 2>&1; then
-  printf "$NOTE - ${YELLOW} Hyprland is already installed.${RESET} No action required.\n"
+  printf "$NOTE - ${YELLOW} Hyprland è già installato.${RESET} Nessuna azione richiesta.\n"
 else
-  printf "$INFO - Hyprland not found. ${SKY_BLUE} Installing Hyprland...${RESET}\n"
+  printf "$INFO - Hyprland non trovato. ${SKY_BLUE} Installazione di Hyprland...${RESET}\n"
   for HYPRLAND in "${hypr[@]}"; do
     install_package "$HYPRLAND" "$LOG"
   done
 fi
 
-# Hyprland -eco packages
-printf "${NOTE} - Installing ${SKY_BLUE}other Hyprland-eco packages${RESET} .......\n"
+# Pacchetti Hyprland -eco
+printf "${NOTE} - Installazione di ${SKY_BLUE}altri pacchetti Hyprland-eco${RESET} .......\n"
 for HYPR in "${hypr_eco[@]}"; do
   if ! command -v "$HYPR" >/dev/null 2>&1; then
-    printf "$INFO - ${YELLOW}$HYPR${RESET} not found. Installing ${YELLOW}$HYPR...${RESET}\n"
+    printf "$INFO - ${YELLOW}$HYPR${RESET} non trovato. Installazione di ${YELLOW}$HYPR...${RESET}\n"
     install_package "$HYPR" "$LOG"
   else
-    printf "$NOTE - ${YELLOW} $HYPR is already installed.${RESET} No action required.\n"
+    printf "$NOTE - ${YELLOW} $HYPR è già installato.${RESET} Nessuna azione richiesta.\n"
   fi
 done
 
