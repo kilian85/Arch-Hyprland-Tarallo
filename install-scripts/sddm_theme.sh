@@ -1,114 +1,104 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# SDDM themes #
+# Temi SDDM #
 
 source_theme="https://github.com/JaKooLit/simple-sddm-2.git"
 theme_name="simple_sddm_2"
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## ATTENZIONE: NON MODIFICARE OLTRE QUESTA LINEA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro alla cartella superiore dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Carica il file delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile caricare Global_functions.sh"
   exit 1
 fi
 
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log includendo data e ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_sddm_theme.log"
     
-# SDDM-themes
-printf "${INFO} Installing ${SKY_BLUE}Additional SDDM Theme${RESET}\n"
+# Temi SDDM
+printf "${INFO} Installazione ${SKY_BLUE}Tema SDDM Addizionale${RESET}\n"
 
-# Check if /usr/share/sddm/themes/$theme_name exists and remove if it does
+# Controlla se /usr/share/sddm/themes/$theme_name esiste e lo rimuove se presente
 if [ -d "/usr/share/sddm/themes/$theme_name" ]; then
   sudo rm -rf "/usr/share/sddm/themes/$theme_name"
-  echo -e "\e[1A\e[K${OK} - Removed existing $theme_name directory." 2>&1 | tee -a "$LOG"
+  echo -e "\e[1A\e[K${OK} - Rimossa la directory esistente $theme_name." 2>&1 | tee -a "$LOG"
 fi
 
-# Check if $theme_name directory exists in the current directory and remove if it does
+# Controlla se la directory $theme_name esiste nella cartella corrente e la rimuove
 if [ -d "$theme_name" ]; then
   rm -rf "$theme_name"
-  echo -e "\e[1A\e[K${OK} - Removed existing $theme_name directory from the current location." 2>&1 | tee -a "$LOG"
+  echo -e "\e[1A\e[K${OK} - Rimossa la directory esistente $theme_name dalla posizione corrente." 2>&1 | tee -a "$LOG"
 fi
 
-# Clone the repository
+# Clona il repository
 if git clone --depth=1 "$source_theme" "$theme_name"; then
   if [ ! -d "$theme_name" ]; then
-    echo "${ERROR} Failed to clone the repository." | tee -a "$LOG"
+    echo "${ERROR} Errore durante la clonazione del repository." | tee -a "$LOG"
   fi
 
-  # Create themes directory if it doesn't exist
+  # Crea la directory dei temi se non esiste
   if [ ! -d "/usr/share/sddm/themes" ]; then
     sudo mkdir -p /usr/share/sddm/themes
-    echo "${OK} - Directory '/usr/share/sddm/themes' created." | tee -a "$LOG"
+    echo "${OK} - Directory '/usr/share/sddm/themes' creata." | tee -a "$LOG"
   fi
 
-  # Move cloned theme to the themes directory
+  # Sposta il tema clonato nella directory dei temi di sistema
   sudo mv "$theme_name" "/usr/share/sddm/themes/$theme_name" 2>&1 | tee -a "$LOG"
 
-  # setting up SDDM theme
+  # Configurazione del tema SDDM
   sddm_conf="/etc/sddm.conf"
   BACKUP_SUFFIX=".bak"
 
-  echo -e "${NOTE} Setting up the login screen." | tee -a "$LOG"
+  echo -e "${NOTE} Configurazione della schermata di accesso (login)." | tee -a "$LOG"
 
-  # Backup the sddm.conf file if it exists
+  # Esegue il backup del file sddm.conf se esiste
   if [ -f "$sddm_conf" ]; then
-    echo "Backing up $sddm_conf" | tee -a "$LOG"
+    echo "Esecuzione backup di $sddm_conf" | tee -a "$LOG"
     sudo cp "$sddm_conf" "$sddm_conf$BACKUP_SUFFIX" 2>&1 | tee -a "$LOG"
   else
-    echo "$sddm_conf does not exist, creating a new one." | tee -a "$LOG"
+    echo "$sddm_conf non esiste, creazione di un nuovo file." | tee -a "$LOG"
     sudo touch "$sddm_conf" 2>&1 | tee -a "$LOG"
   fi
 
-  # Check if the [Theme] section exists
+  # Controlla se esiste la sezione [Theme]
   if grep -q '^\[Theme\]' "$sddm_conf"; then
-    # Update the Current= line under [Theme]
+    # Aggiorna la riga Current= sotto la sezione [Theme]
     sudo sed -i "/^\[Theme\]/,/^\[/{s/^\s*Current=.*/Current=$theme_name/}" "$sddm_conf" 2>&1 | tee -a "$LOG"
     
-    # If no Current= line was found and replaced, append it after the [Theme] section
+    # Se la riga Current= non è stata trovata, la aggiunge dopo [Theme]
     if ! grep -q '^\s*Current=' "$sddm_conf"; then
       sudo sed -i "/^\[Theme\]/a Current=$theme_name" "$sddm_conf" 2>&1 | tee -a "$LOG"
-      echo "Appended Current=$theme_name under [Theme] in $sddm_conf" | tee -a "$LOG"
+      echo "Aggiunto Current=$theme_name sotto [Theme] in $sddm_conf" | tee -a "$LOG"
     else
-      echo "Updated Current=$theme_name in $sddm_conf" | tee -a "$LOG"
+      echo "Aggiornato Current=$theme_name in $sddm_conf" | tee -a "$LOG"
     fi
   else
-    # Append the [Theme] section at the end if it doesn't exist
+    # Aggiunge la sezione [Theme] alla fine se non esiste
     echo -e "\n[Theme]\nCurrent=$theme_name" | sudo tee -a "$sddm_conf" > /dev/null
-    echo "Added [Theme] section with Current=$theme_name in $sddm_conf" | tee -a "$LOG"
+    echo "Aggiunta sezione [Theme] con Current=$theme_name in $sddm_conf" | tee -a "$LOG"
   fi
 
-  # Add [General] section with InputMethod=qtvirtualkeyboard if it doesn't exist
+  # Aggiunge la sezione [General] con tastiera virtuale se non esiste
   if ! grep -q '^\[General\]' "$sddm_conf"; then
     echo -e "\n[General]\nInputMethod=qtvirtualkeyboard" | sudo tee -a "$sddm_conf" > /dev/null
-    echo "Added [General] section with InputMethod=qtvirtualkeyboard in $sddm_conf" | tee -a "$LOG"
+    echo "Aggiunta sezione [General] con InputMethod=qtvirtualkeyboard in $sddm_conf" | tee -a "$LOG"
   else
-    # Update InputMethod line if section exists
+    # Aggiorna InputMethod se la sezione esiste già
     if grep -q '^\s*InputMethod=' "$sddm_conf"; then
       sudo sed -i '/^\[General\]/,/^\[/{s/^\s*InputMethod=.*/InputMethod=qtvirtualkeyboard/}' "$sddm_conf" 2>&1 | tee -a "$LOG"
-      echo "Updated InputMethod to qtvirtualkeyboard in $sddm_conf" | tee -a "$LOG"
+      echo "Aggiornato InputMethod a qtvirtualkeyboard in $sddm_conf" | tee -a "$LOG"
     else
       sudo sed -i '/^\[General\]/a InputMethod=qtvirtualkeyboard' "$sddm_conf" 2>&1 | tee -a "$LOG"
-      echo "Appended InputMethod=qtvirtualkeyboard under [General] in $sddm_conf" | tee -a "$LOG"
+      echo "Aggiunto InputMethod=qtvirtualkeyboard sotto [General] in $sddm_conf" | tee -a "$LOG"
     fi
   fi
 
-  # Replace current background from assets
-  sudo cp -r assets/sddm.png "/usr/share/sddm/themes/$theme_name/Backgrounds/default" 2>&1 | tee -a "$LOG"
-  sudo sed -i 's|^wallpaper=".*"|wallpaper="Backgrounds/default"|' "/usr/share/sddm/themes/$theme_name/theme.conf" 2>&1 | tee -a "$LOG"
-
-  echo "${OK} - ${MAGENTA}Additional ${YELLOW}$theme_name SDDM Theme${RESET} successfully installed." | tee -a "$LOG"
-
-else
-
-  echo "${ERROR} - Failed to clone the sddm theme repository. Please check your internet connection." | tee -a "$LOG" >&2
-fi
-
-printf "\n%.0s" {1..2}
+  # Sostituisce lo sfondo attuale con quello degli asset
+  sudo cp -r
