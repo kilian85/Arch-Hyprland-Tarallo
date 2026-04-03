@@ -269,7 +269,7 @@ options_command+=(
     "pokemon" "Aggiungere script di colori Pokemon al tuo terminale?" "OFF"
     #"rog" "Stai installando su laptop Asus ROG?" "OFF"
     "dots" "Scaricare e installare i dotfiles KooL Hyprland preconfigurati?" "OFF"
-	"wallpaper_engine" "Install Linux Wallpaper Engine GUI (AUR)?" "OFF"
+	"wallpaper_engine" "Installa Linux Wallpaper Engine GUI (AUR)?" "OFF"
 )
 
 # Cattura le opzioni selezionate prima che il ciclo while inizi
