@@ -1,10 +1,10 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Fonts #
+# Font #
 
-# These fonts are minimun required for pre-configured dots to work. You can add here as required
-# WARNING! If you remove packages here, dotfiles may not work properly.
-# and also, ensure that packages are present in AUR and official Arch Repo
+# Questi font sono il minimo richiesto per far funzionare i dot preconfigurati. Puoi aggiungere qui come richiesto
+# AVVERTIMENTO! Se rimuovi pacchetti qui, i dotfiles potrebbero non funzionare correttamente.
+# e anche, assicurati che i pacchetti siano presenti in AUR e nel repo ufficiale di Arch
 
 fonts=(
   adobe-source-code-pro-fonts 
@@ -19,27 +19,27 @@ fonts=(
   noto-fonts
 )
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
 
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_fonts.log"
 
 
-# Installation of main components
-printf "\n%s - Installing necessary ${SKY_BLUE}fonts${RESET}.... \n" "${NOTE}"
+# Installazione dei componenti principali
+printf "\n%s - Installazione dei ${SKY_BLUE}font${RESET} necessari.... \n" "${NOTE}"
 
 for PKG1 in "${fonts[@]}"; do
   install_package "$PKG1" "$LOG"
