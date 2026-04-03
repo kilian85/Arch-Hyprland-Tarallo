@@ -135,6 +135,7 @@ pokemon="OFF"
 dots="OFF"
 input_group="OFF"
 nvidia="OFF"
+wallpaper_engine="OFF"
 nouveau="OFF"
 
 # Funzione per caricare il file preset
@@ -268,6 +269,7 @@ options_command+=(
     "pokemon" "Aggiungere script di colori Pokemon al tuo terminale?" "OFF"
     #"rog" "Stai installando su laptop Asus ROG?" "OFF"
     "dots" "Scaricare e installare i dotfiles KooL Hyprland preconfigurati?" "OFF"
+	"wallpaper_engine" "Install Linux Wallpaper Engine GUI (AUR)?" "OFF"
 )
 
 # Cattura le opzioni selezionate prima che il ciclo while inizi
@@ -436,6 +438,11 @@ for option in "${options[@]}"; do
         dots)
             echo "${INFO} Installando dotfiles ${SKY_BLUE}KooL Hyprland preconfigurati...${RESET}" | tee -a "$LOG"
             execute_script "dotfiles-main.sh"
+            ;;
+        wallpaper_engine)
+            echo "${INFO} Installando ${SKY_BLUE}linux-wallpaperengine-gui...${RESET}" | tee -a "$LOG"
+            # Utilizza l'helper AUR (yay o paru) che lo script ha rilevato all'inizio
+            $aur_helper -S --noconfirm linux-wallpaperengine-gui-bin
             ;;
         *)
             echo "Opzione sconosciuta: $option" | tee -a "$LOG"
