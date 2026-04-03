@@ -1,36 +1,36 @@
 #!/bin/bash
 # 💫 https://github.com/JaKooLit 💫 #
-# Adding users into input group #
+# Aggiunta di utenti al gruppo input #
 
-## WARNING: DO NOT EDIT BEYOND THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING! ##
+## AVVERTIMENTO: NON MODIFICARE OLTRE QUESTA RIGA SE NON SAI COSA STAI FACENDO! ##
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# Change the working directory to the parent directory of the script
+# Cambia la directory di lavoro nella directory padre dello script
 PARENT_DIR="$SCRIPT_DIR/.."
-cd "$PARENT_DIR" || { echo "${ERROR} Failed to change directory to $PARENT_DIR"; exit 1; }
+cd "$PARENT_DIR" || { echo "${ERROR} Impossibile cambiare directory in $PARENT_DIR"; exit 1; }
 
-# Source the global functions script
+# Sorgente lo script delle funzioni globali
 if ! source "$(dirname "$(readlink -f "$0")")/Global_functions.sh"; then
-  echo "Failed to source Global_functions.sh"
+  echo "Impossibile sorgentare Global_functions.sh"
   exit 1
 fi
 
 
 
-# Set the name of the log file to include the current date and time
+# Imposta il nome del file di log per includere la data e l'ora corrente
 LOG="Install-Logs/install-$(date +%d-%H%M%S)_input.log"
 
-# Check if the 'input' group exists
+# Verifica se il gruppo 'input' esiste
 if grep -q '^input:' /etc/group; then
-    echo "${OK} ${MAGENTA}input${RESET} group exists."
+    echo "${OK} Il gruppo ${MAGENTA}input${RESET} esiste."
 else
-    echo "${NOTE} ${MAGENTA}input${RESET} group doesn't exist. Creating ${MAGENTA}input${RESET} group..."
+    echo "${NOTE} Il gruppo ${MAGENTA}input${RESET} non esiste. Creazione del gruppo ${MAGENTA}input${RESET}..."
     sudo groupadd input
-    echo "${MAGENTA}input${RESET} group created" >> "$LOG"
+    echo "Gruppo ${MAGENTA}input${RESET} creato" >> "$LOG"
 fi
 
-# Add the user to the 'input' group
+# Aggiungi l'utente al gruppo 'input'
 sudo usermod -aG input "$(whoami)"
-echo "${OK} ${YELLOW}user${RESET} added to the ${MAGENTA}input${RESET} group. Changes will take effect after you log out and log back in." >> "$LOG"
+echo "${OK} ${YELLOW}Utente${RESET} aggiunto al gruppo ${MAGENTA}input${RESET}. Le modifiche avranno effetto dopo il logout e il login." >> "$LOG"
 
 printf "\n%.0s" {1..2}
