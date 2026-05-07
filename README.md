@@ -179,12 +179,13 @@ Il tema predefinito è `agnosterzak`. Per cambiarlo modifica `ZSH_THEME` in `~/.
 |---|---|
 | `SUPER + D` | Apri launcher app (Rofi) |
 | `SUPER + Return` | Apri terminale |
+| `SUPER + SHIFT + Return` | Terminale dropdown |
 | `SUPER + E` | Apri file manager |
 | `SUPER + B` | Apri browser predefinito |
 | `SUPER + G` | Game Launcher |
 | `SUPER + A` | Vista generale del desktop |
 | `SUPER + H` | Mostra suggerimenti / cheat sheet |
-| `SUPER + SHIFT + Return` | Terminale dropdown |
+| `SUPER + F2` | Cambia profilo energetico (Risparmio → Bilanciato → Prestazioni) |
 
 ### 🎨 Tema e aspetto
 
@@ -193,13 +194,15 @@ Il tema predefinito è `agnosterzak`. Per cambiarlo modifica `ZSH_THEME` in `~/.
 | `SUPER + T` | Cambia tema globale (Wallust) |
 | `SUPER + W` | Seleziona sfondo |
 | `SUPER + SHIFT + W` | Effetti sfondo |
-| `CTRL + ALT + W` | Sfondo casuale |
+| `SUPER + CTRL + ALT + W` | Sfondo casuale |
 | `SUPER + CTRL + B` | Menu stili Waybar |
 | `SUPER + ALT + B` | Menu layout Waybar |
 | `SUPER + CTRL + ALT + B` | Mostra/nascondi Waybar |
 | `SUPER + SHIFT + A` | Menu animazioni |
+| `SUPER + SHIFT + G` | Modalità gioco (animazioni ON/OFF) |
 | `SUPER + SHIFT + O` | Cambia tema Oh-My-Zsh |
 | `SUPER + CTRL + R` | Selettore tema Rofi |
+| `SUPER + CTRL + SHIFT + R` | Selettore tema Rofi v2 |
 
 ### 🪟 Gestione finestre
 
@@ -208,13 +211,16 @@ Il tema predefinito è `agnosterzak`. Per cambiarlo modifica `ZSH_THEME` in `~/.
 | `SUPER + Q` | Chiudi finestra attiva |
 | `SUPER + SHIFT + Q` | Termina processo attivo |
 | `SUPER + SPACE` | Finestra flottante |
+| `SUPER + ALT + SPACE` | Tutte le finestre flottanti |
 | `SUPER + SHIFT + F` | Schermo intero |
-| `SUPER + CTRL + F` | Massimizza finestra |
-| `SUPER + G` | Raggruppa finestre |
+| `SUPER + CTRL + F` | Schermo intero finto |
+| `SUPER + CTRL + G` | Raggruppa/separa finestre |
 | `SUPER + Tab` | Cambia finestra nel gruppo (avanti) |
 | `SUPER + SHIFT + Tab` | Cambia finestra nel gruppo (indietro) |
 | `ALT + Tab` | Cicla finestra successiva |
 | `SUPER + CTRL + O` | Toggle opacità finestra attiva |
+| `SUPER + ALT + O` | Attiva/disattiva sfocatura |
+| `SUPER + ALT + L` | Cambia layout Dwindle / Master |
 
 ### 🔀 Spostamento finestre
 
@@ -245,11 +251,11 @@ Il tema predefinito è `agnosterzak`. Per cambiarlo modifica `ZSH_THEME` in `~/.
 | Tasto | Azione |
 |---|---|
 | `SUPER + Stamp` | Screenshot immediato |
-| `SUPER + SHIFT + Stamp` | Screenshot area |
+| `SUPER + SHIFT + Stamp` | Screenshot area (grim + slurp) |
+| `SUPER + SHIFT + S` | Screenshot area (Swappy) |
 | `SUPER + CTRL + Stamp` | Screenshot in 5 secondi |
 | `SUPER + CTRL + SHIFT + Stamp` | Screenshot in 10 secondi |
-| `ALT + Stamp` | Screenshot finestra attiva |
-| `SUPER + SHIFT + S` | Screenshot con Swappy |
+| `SUPER + ALT + Stamp` | Screenshot finestra attiva |
 
 ### 🔊 Audio e media
 
@@ -267,9 +273,9 @@ Il tema predefinito è `agnosterzak`. Per cambiarlo modifica `ZSH_THEME` in `~/.
 
 | Tasto | Azione |
 |---|---|
-| `CTRL + ALT + L` | Blocca schermo |
-| `CTRL + ALT + P` | Menu spegnimento |
-| `CTRL + ALT + Delete` | Esci da Hyprland |
+| `SUPER + CTRL + ALT + L` | Blocca schermo |
+| `SUPER + CTRL + ALT + P` | Menu spegnimento |
+| `SUPER + CTRL + ALT + Delete` | Esci da Hyprland |
 | `SUPER + SHIFT + N` | Pannello notifiche |
 | `SUPER + SHIFT + E` | Menu impostazioni rapide |
 | `SUPER + N` | Attiva/disattiva luce notturna |
