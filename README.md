@@ -46,6 +46,8 @@ Fork personalizzato dell'installatore originale JaKooLit/Arch-Hyprland, con le s
 | 🔐 Configurazione biometrica | Wizard guidato al primo avvio: rileva automaticamente lettore impronte e webcam IR e guida la configurazione dell'autenticazione in pochi click. Se il PC non ha periferiche biometriche, il wizard lo rileva e si chiude senza mostrare nulla in seguito. Rilanciabile in qualsiasi momento da rofi |
 | 📸 Snapshot del sistema | Salva automaticamente lo stato del sistema prima di ogni aggiornamento. Se qualcosa si rompe, puoi tornare indietro in pochi click. Gestibile anche da interfaccia grafica. **Funziona solo se hai scelto btrfs come filesystem durante l'installazione di Arch Linux e derivate (EndeavourOS, CachyOS, Garuda, Manjaro...)** |
 | 🕹️ Game Launcher | Launcher giochi standalone con griglia dinamica Rofi. Rileva automaticamente i giochi installati su Steam, Lutris, Wine e dalle applicazioni desktop. Cover art scaricate automaticamente da Steam CDN e SteamGridDB. Barra di ricerca integrata e sfondo che mostra il cover dell'ultimo gioco lanciato. Al primo avvio guida la configurazione dell'API key gratuita direttamente da Rofi, senza bisogno di editare file. Keybinding Hyprland configurabile dall'installer |
+| 🔤 OCR dallo schermo | `SUPER ALT T` seleziona un'area dello schermo e ne copia il testo negli appunti, anche da video in riproduzione o menu a comparsa (lo schermo viene congelato durante la selezione). Con `SUPER ALT SHIFT T` il testo passa a un'IA che lo riassume, traduce, spiega o corregge |
+| 🎤 Dettatura vocale italiana | Tieni premuto `F9`, parla, rilascia: il testo viene scritto nella finestra attiva. Modello Whisper `large-v3-turbo` in italiano, tutto in locale, con accelerazione Vulkan dove disponibile (su una iGPU Vega: 6 secondi contro 21 della sola CPU). Il testo dettato viene ripulito da punteggiatura e ripetizioni prima di essere scritto — **con Gemini se inserisci una chiave API gratuita** (vedi *Dopo l'installazione*), altrimenti con l'IA locale |
 | 👋 Schermata di benvenuto | Finestra di benvenuto GTK al primo avvio del desktop con azioni rapide: tasti rapidi, configurazione meteo, game launcher, setup biometrico, installazione pacchetti opzionali (browser, gaming, chat vocale) saltati durante il setup. Toggle per abilitare o disabilitare la comparsa all'avvio. Riapribile in qualsiasi momento |
 
 ---
@@ -91,6 +93,26 @@ chmod +x install.sh
 - Premi `SUPER H` per i **suggerimenti** oppure clicca HINT! nella waybar
 - I tasti rapidi sono accessibili con `SUPER SHIFT K` oppure clic destro su `HINTS`
 - Per cambiare tema ZSH usa `SUPER SHIFT O`, poi riapri il terminale
+
+### Chiave Gemini per la dettatura (facoltativa)
+
+Il testo che detti con `F9` viene ripulito prima di essere scritto: punteggiatura, maiuscole, accenti e ripetizioni del parlato. Il lavoro può farlo Gemini, che l'italiano lo conosce molto meglio dei modelli piccoli che girano in locale.
+
+1. Crea una chiave gratuita su **https://aistudio.google.com/apikey**
+2. Salvala in `~/.config/dettatura-gemini.env`, senza farla passare dalla cronologia della shell:
+
+```bash
+read -rs "?Chiave Gemini: " K
+install -m600 /dev/null ~/.config/dettatura-gemini.env
+echo "GEMINI_API_KEY=$K" > ~/.config/dettatura-gemini.env
+unset K
+```
+
+*(su bash usa `read -rsp "Chiave Gemini: " K`)*
+
+Il modello usato è `gemini-3.5-flash-lite`: corregge senza riformulare e risponde in meno di un secondo. Si cambia con la variabile `DETTATURA_MODELLO_GEMINI`.
+
+**Senza chiave non serve fare nulla**: la ripulitura viene fatta da qwen tramite Ollama, se installato, e in mancanza anche di quello il testo dettato viene scritto così com'è. Da tenere presente che **con la chiave attiva le frasi dettate vengono inviate ai server di Google**, mentre tutto il resto (dettatura, OCR, IA locale) resta sul tuo computer.
 
 ### Reinstallare uno script singolo
 

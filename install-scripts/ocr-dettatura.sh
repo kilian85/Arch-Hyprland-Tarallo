@@ -75,7 +75,7 @@ if command -v voxtype >/dev/null 2>&1; then
   POSTPROCESS="$HOME/.config/hypr/UserScripts/dettatura_postprocess.sh"
   if [ -x "$POSTPROCESS" ]; then
     voxtype config set output.post_process.command "$POSTPROCESS" >> "$LOG" 2>&1
-    printf "%s - Ripulitura del dettato attiva (usa Gemini se metti la chiave in ~/.config/dettatura-gemini.env, altrimenti Ollama in locale)\n" "${NOTE}"
+    printf "%s - Ripulitura del dettato attiva\n" "${OK}"
   fi
 
   # Su GPU AMD/Intel il Vulkan fa una differenza enorme: misurate 6 s contro 21 s
@@ -119,6 +119,23 @@ if ! command -v ollama >/dev/null 2>&1; then
   else
     echo -e "${NOTE} Salto Ollama. L'OCR normale funziona lo stesso; la voce con l'IA no."
   fi
+fi
+
+# --- Come migliorare la ripulitura del dettato --------------------------------
+# Detto qui a voce alta perche' e' l'unico passaggio che resta da fare a mano.
+if [ ! -f "$HOME/.config/dettatura-gemini.env" ]; then
+  printf "\n%.0s" {1..1}
+  printf "%s ${SKY_BLUE}Dettatura: come farla correggere meglio${RESET}\n" "${NOTE}"
+  printf "   Il testo che detti con F9 viene ripulito prima di essere scritto.\n"
+  printf "   In locale ci pensa qwen; ma l'italiano lo scrive molto meglio Gemini,\n"
+  printf "   che si attiva mettendo una chiave gratuita in ${YELLOW}~/.config/dettatura-gemini.env${RESET}:\n\n"
+  printf "     1. crea la chiave su ${SKY_BLUE}https://aistudio.google.com/apikey${RESET}\n"
+  printf "     2. salvala con questi comandi:\n\n"
+  printf "        ${YELLOW}read -rsp \"Chiave Gemini: \" K${RESET}\n"
+  printf "        ${YELLOW}install -m600 /dev/null ~/.config/dettatura-gemini.env${RESET}\n"
+  printf "        ${YELLOW}echo \"GEMINI_API_KEY=\$K\" > ~/.config/dettatura-gemini.env; unset K${RESET}\n\n"
+  printf "   Senza chiave funziona tutto lo stesso, in locale.\n"
+  printf "   Con la chiave, invece, le frasi dettate vengono inviate a Google.\n"
 fi
 
 printf "\n%.0s" {1..2}
