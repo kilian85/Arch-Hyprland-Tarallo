@@ -136,6 +136,7 @@ howdy="OFF"
 snapper="OFF"
 dots="OFF"
 input_group="OFF"
+ocr_dettatura="OFF"
 nvidia="OFF"
 nouveau="OFF"
 
@@ -274,6 +275,7 @@ options_command+=(
     "fingerprint" "Installare supporto lettore impronte (Validity 138a:0097)?" "OFF"
     "howdy" "Installare Howdy (facciale) + auto-login SDDM?" "OFF"
     "snapper" "Abilitare snapshot btrfs? (richiede filesystem btrfs)" "OFF"
+    "ocr_dettatura" "Installare OCR dallo schermo e dettatura vocale italiana?" "OFF"
     "dots" "Scaricare e installare i dotfile Hyprland preconfigurati?" "OFF"
 )
 
@@ -426,6 +428,10 @@ for option in "${options[@]}"; do
         gtk_themes)
             echo "${INFO} Installazione ${SKY_BLUE}temi GTK...${RESET}" | tee -a "$LOG"
             execute_script "gtk_themes.sh"
+            ;;
+        ocr_dettatura)
+            echo "${INFO} Installazione ${SKY_BLUE}OCR e dettatura vocale...${RESET}" | tee -a "$LOG"
+            execute_script "ocr-dettatura.sh"
             ;;
         input_group)
             echo "${INFO} Aggiunta utente al gruppo ${SKY_BLUE}input...${RESET}" | tee -a "$LOG"
