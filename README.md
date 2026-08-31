@@ -98,7 +98,7 @@ chmod +x install.sh
 
 Il testo che detti con `F9` viene ripulito prima di essere scritto: punteggiatura, maiuscole, accenti e ripetizioni del parlato. Il lavoro può farlo Gemini, che l'italiano lo conosce molto meglio dei modelli piccoli che girano in locale.
 
-Apri rofi e cerca **«Chiave Gemini»**: il wizard spiega come ottenerla su [AI Studio](https://aistudio.google.com/apikey), la chiede in un campo protetto, **verifica con Google che sia valida** prima di salvarla, e la scrive in `~/.config/dettatura-gemini.env` con i permessi giusti. Dalla stessa voce puoi in seguito provarla, sostituirla o rimuoverla — rimuovendola torna tutto in locale.
+Apri la **schermata di benvenuto** (è in rofi come «Hyprland Tarallo», o compare da sola al primo avvio) e premi **🎤 Dettatura vocale**: il wizard spiega come ottenerla su [AI Studio](https://aistudio.google.com/apikey), la chiede in un campo protetto, **verifica con Google che sia valida** prima di salvarla, e la scrive in `~/.config/dettatura-gemini.env` con i permessi giusti. Dallo stesso pulsante puoi in seguito provarla, sostituirla o rimuoverla — rimuovendola torna tutto in locale.
 
 <details><summary>Preferisci farlo da terminale?</summary>
 

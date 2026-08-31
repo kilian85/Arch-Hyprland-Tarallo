@@ -129,8 +129,8 @@ if [ ! -f "$HOME/.config/dettatura-gemini.env" ]; then
   printf "   Il testo che detti con F9 viene ripulito prima di essere scritto.\n"
   printf "   In locale ci pensa qwen; ma l'italiano lo scrive molto meglio Gemini,\n"
   printf "   che si attiva con una chiave gratuita.\n\n"
-  printf "   Cercala da rofi come ${YELLOW}Chiave Gemini${RESET}: il wizard ti guida,\n"
-  printf "   verifica la chiave e la salva al posto giusto.\n\n"
+  printf "   Aprila dalla ${YELLOW}schermata di benvenuto${RESET}, pulsante ${YELLOW}Dettatura vocale${RESET}:\n"
+  printf "   il wizard ti guida, verifica la chiave e la salva al posto giusto.\n\n"
   printf "   Senza chiave funziona tutto lo stesso, in locale.\n"
   printf "   Con la chiave, invece, le frasi dettate vengono inviate a Google.\n"
 fi
