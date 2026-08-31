@@ -98,17 +98,17 @@ chmod +x install.sh
 
 Il testo che detti con `F9` viene ripulito prima di essere scritto: punteggiatura, maiuscole, accenti e ripetizioni del parlato. Il lavoro può farlo Gemini, che l'italiano lo conosce molto meglio dei modelli piccoli che girano in locale.
 
-1. Crea una chiave gratuita su **https://aistudio.google.com/apikey**
-2. Salvala in `~/.config/dettatura-gemini.env`, senza farla passare dalla cronologia della shell:
+Apri rofi e cerca **«Chiave Gemini»**: il wizard spiega come ottenerla su [AI Studio](https://aistudio.google.com/apikey), la chiede in un campo protetto, **verifica con Google che sia valida** prima di salvarla, e la scrive in `~/.config/dettatura-gemini.env` con i permessi giusti. Dalla stessa voce puoi in seguito provarla, sostituirla o rimuoverla — rimuovendola torna tutto in locale.
+
+<details><summary>Preferisci farlo da terminale?</summary>
 
 ```bash
-read -rs "?Chiave Gemini: " K
+read -rsp "Chiave Gemini: " K
 install -m600 /dev/null ~/.config/dettatura-gemini.env
 echo "GEMINI_API_KEY=$K" > ~/.config/dettatura-gemini.env
 unset K
 ```
-
-*(su bash usa `read -rsp "Chiave Gemini: " K`)*
+</details>
 
 Il modello usato è `gemini-3.5-flash-lite`: corregge senza riformulare e risponde in meno di un secondo. Si cambia con la variabile `DETTATURA_MODELLO_GEMINI`.
 
